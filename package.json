@@ -1,0 +1,25 @@
+{
+  "name": "shortly-api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "URL Shotener API",
+  "main": "/src/app.js",
+  "scripts": {
+    "start": "node /src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renatainacio/shortly-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/renatainacio/shortly-api/issues"
+  },
+  "homepage": "https://github.com/renatainacio/shortly-api#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "router": "^1.3.8"
+  }
+}
