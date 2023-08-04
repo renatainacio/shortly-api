@@ -81,17 +81,19 @@ export async function getUser(req, res){
 
 export async function getRanking(req, res){
     try{
-        const user = await db.query(`
-            SELECT users.id as "userId", users.name, urls."shortUrl", urls.id as "urlId", urls.url, COUNT(accesses.id) as "visitCount"
-            JOIN urls
+        const ranking = await db.query(`
+            SELECT users.id, users.name, COUNT(urls.id) as "linksCount", COUNT(accesses.id) as "visitCount"
+            FROM users
+            LEFT JOIN urls
             ON urls."userId"=users.id
             LEFT JOIN accesses
             ON urls.id=accesses."urlId"
-            GROUP BY users.id, urls.id
-            ORDER BY "visitCount";
-        `, [res.locals.session.userId]);
-        console.log(user.rows);
-        res.sendStatus(200);
+            GROUP BY users.id
+            ORDER BY "visitCount" DESC
+            LIMIT 10;
+        `);
+        console.log(ranking.rows);
+        res.status(200).send(ranking.rows);
     }catch (err){
         res.status(500).send(err.message);
     }
