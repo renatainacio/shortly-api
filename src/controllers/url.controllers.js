@@ -47,6 +47,10 @@ export async function redirectUrl(req, res){
         `, [shortUrl]);
         if (url.rows.length === 0)
             return res.sendStatus(404);
+        await db.query(`
+            INSERT INTO accesses ("urlId")
+            VALUES ($1);
+        `, [url.rows[0].id]);
         res.redirect(url.rows[0].url);
     }catch (err){
         res.status(500).send(err.message);

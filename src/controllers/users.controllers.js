@@ -51,7 +51,29 @@ export async function signIn(req, res){
 
 export async function getUser(req, res){
     try{
-        res.sendStatus(200);
+        const user = await db.query(`
+            SELECT users.id, users.name, urls."shortUrl", urls.id as "urlId", urls.url, COUNT(accesses.id) as "visitCount"
+            FROM users
+            JOIN urls
+            ON urls."userId"=users.id
+            LEFT JOIN accesses
+            ON urls.id=accesses."urlId"
+            WHERE users.id=$1
+            GROUP BY users.id, urls.id;
+        `, [res.locals.session.userId]);
+        const userDetails = {
+            id: user.rows[0].id,
+            name: user.rows[0].name,
+            visitCount: user.rows.reduce((pv, cv) => pv + Number(cv.visitCount), 0),
+            shortenedUrls: []
+        };
+        user.rows.forEach(register => userDetails.shortenedUrls.push({
+            id: register.urlId,
+            shortUrl: register.shortUrl,
+            url: register.url,
+            visitCount: register.visitCount
+        }))
+        res.status(200).send(userDetails);
     }catch (err){
         res.status(500).send(err.message);
     }
@@ -59,6 +81,16 @@ export async function getUser(req, res){
 
 export async function getRanking(req, res){
     try{
+        const user = await db.query(`
+            SELECT users.id as "userId", users.name, urls."shortUrl", urls.id as "urlId", urls.url, COUNT(accesses.id) as "visitCount"
+            JOIN urls
+            ON urls."userId"=users.id
+            LEFT JOIN accesses
+            ON urls.id=accesses."urlId"
+            GROUP BY users.id, urls.id
+            ORDER BY "visitCount";
+        `, [res.locals.session.userId]);
+        console.log(user.rows);
         res.sendStatus(200);
     }catch (err){
         res.status(500).send(err.message);
