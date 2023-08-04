@@ -1,9 +1,12 @@
 import { Router } from "express";
 import { deleteUrl, getUrlById, postUrl, redirectUrl } from "../controllers/url.controllers.js";
+import validateAuth from "../middlewares/validateAuth.js";
+import validateSchema from "../middlewares/validateSchema.js";
+import urlSchema from "../schemas/url.schemas.js";
 
 const urlRouter = Router();
 
-urlRouter.post("/urls/shorten", postUrl);
+urlRouter.post("/urls/shorten", validateAuth, validateSchema(urlSchema), postUrl);
 
 urlRouter.get('/urls/:id', getUrlById);
 
