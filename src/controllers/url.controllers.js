@@ -38,8 +38,16 @@ export async function getUrlById(req, res){
 }
 
 export async function redirectUrl(req, res){
+    const { shortUrl } = req.params;
     try{
-        res.sendStatus(200);
+        const url = await db.query(`
+            SELECT *
+            FROM urls
+            WHERE "shortUrl"=$1;
+        `, [shortUrl]);
+        if (url.rows.length === 0)
+            return res.sendStatus(404);
+        res.redirect(url.rows[0].url);
     }catch (err){
         res.status(500).send(err.message);
     }
