@@ -12,6 +12,6 @@ urlRouter.get('/urls/:id', getUrlById);
 
 urlRouter.get('/urls/open/:shortUrl', redirectUrl);
 
-urlRouter.delete('/url/:id', deleteUrl);
+urlRouter.delete('/urls/:id', validateAuth, deleteUrl);
 
 export default urlRouter;
