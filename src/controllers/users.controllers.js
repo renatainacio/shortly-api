@@ -33,8 +33,8 @@ export async function signIn(req, res){
             FROM users
             WHERE email=$1
         `, [email]);
-        if (!user)
-            return res.status(401);
+        if (user.rows.length === 0)
+            return res.sendStatus(401);
         const correctPassword = bcrypt.compareSync(password, user.rows[0].password);
         if(!correctPassword)
             return res.sendStatus(401);
