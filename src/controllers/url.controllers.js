@@ -51,7 +51,7 @@ export async function redirectUrl(req, res){
             INSERT INTO accesses ("urlId")
             VALUES ($1);
         `, [url.rows[0].id]);
-        res.redirect(url.rows[0].url);
+        res.redirect(`${url.rows[0].url}/`);
     }catch (err){
         res.status(500).send(err.message);
     }
