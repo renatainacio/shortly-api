@@ -12,7 +12,6 @@ export default async function validateAuth(req, res, next){
         `, [token]);
         if (session.rows.length === 0)
             return res.sendStatus(401);
-        console.log("user authenticated");
         res.locals.session = session.rows[0];
     } catch (err){
         res.status(500).send(err.message);
