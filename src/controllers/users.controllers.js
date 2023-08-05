@@ -54,7 +54,7 @@ export async function getUser(req, res){
         const user = await db.query(`
             SELECT users.id, users.name, urls."shortUrl", urls.id as "urlId", urls.url, COUNT(accesses.id) as "visitCount"
             FROM users
-            JOIN urls
+            LEFT JOIN urls
             ON urls."userId"=users.id
             LEFT JOIN accesses
             ON urls.id=accesses."urlId"
@@ -63,6 +63,7 @@ export async function getUser(req, res){
         `, [res.locals.session.userId]);
         console.log(`locals session: ${res.locals.session}`);
         console.log(`locals session: ${res.locals.session.userId}`);
+        console.log(`user: ${user.rows}`);
         const userDetails = {
             id: user.rows[0].id,
             name: user.rows[0].name,
