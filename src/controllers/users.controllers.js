@@ -67,12 +67,14 @@ export async function getUser(req, res){
             visitCount: user.rows.reduce((pv, cv) => pv + Number(cv.visitCount), 0),
             shortenedUrls: []
         };
-        user.rows.forEach(register => userDetails.shortenedUrls.push({
-            id: register.urlId,
-            shortUrl: register.shortUrl,
-            url: register.url,
-            visitCount: register.visitCount
-        }))
+        if (user.rows[0].url) {
+            user.rows.forEach(register => userDetails.shortenedUrls.push({
+                id: register.urlId,
+                shortUrl: register.shortUrl,
+                url: register.url,
+                visitCount: register.visitCount
+            }))
+        }
         res.status(200).send(userDetails);
     }catch (err){
         res.status(500).send(err.message);
