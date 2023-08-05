@@ -61,12 +61,15 @@ export async function getUser(req, res){
             WHERE users.id=$1
             GROUP BY users.id, urls.id;
         `, [res.locals.session.userId]);
+        console.log(`locals session: ${res.locals.session}`);
+        console.log(`locals session: ${res.locals.session.userId}`);
         const userDetails = {
             id: user.rows[0].id,
             name: user.rows[0].name,
             visitCount: user.rows.reduce((pv, cv) => pv + Number(cv.visitCount), 0),
             shortenedUrls: []
         };
+        console.log(`user details: ${userDetails}`);
         user.rows.forEach(register => userDetails.shortenedUrls.push({
             id: register.urlId,
             shortUrl: register.shortUrl,
