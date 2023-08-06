@@ -35,7 +35,7 @@ export function getUserDetail(userId){
             ON urls.id=accesses."urlId"
             WHERE users.id=$1
             GROUP BY users.id, urls.id;
-        `, [user]);
+        `, [userId]);
     return user;
 }
 
