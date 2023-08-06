@@ -1,7 +1,7 @@
 import { db } from "../database/database.connection.js";
 
-export async function insertUrl(url, userId, shortUrl) {
-    const result = await db.query(`
+export function insertUrl(url, userId, shortUrl) {
+    const result = db.query(`
             INSERT INTO urls (url, "userId", "shortUrl")
             VALUES ($1, $2, $3)
             RETURNING id;
@@ -9,8 +9,8 @@ export async function insertUrl(url, userId, shortUrl) {
     return result;
 };
 
-export async function getUrl(id){
-    const url = await db.query(`
+export function getUrl(id){
+    const url = db.query(`
         SELECT *
         FROM urls
         WHERE id=$1;
@@ -18,8 +18,8 @@ export async function getUrl(id){
     return url;
 }
 
-export async function getByShortUrl(shortUrl){
-    const url = await db.query(`
+export function getByShortUrl(shortUrl){
+    const url = db.query(`
         SELECT *
         FROM urls
         WHERE "shortUrl"=$1;
@@ -27,17 +27,19 @@ export async function getByShortUrl(shortUrl){
     return url;
 }
 
-export async function registerAccess(urlId){
-        await db.query(`
+export function registerAccess(urlId){
+    const result = db.query(`
         INSERT INTO accesses ("urlId")
         VALUES ($1);
     `, [urlId]);
+    return result;
 }
 
-export async function deleteUrlById(id){
-        await db.query(`
+export function deleteUrlById(id){
+    const result = db.query(`
         DELETE
         FROM urls
         WHERE id=$1
     `, [id]);
+    return result;
 }
