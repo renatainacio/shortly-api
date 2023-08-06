@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { deleteUrl, getUrlById, postUrl, redirectUrl } from "../controllers/url.controllers.js";
+import { deleteUrl, getUrlById, postUrl, redirectUrl } from "../controllers/urls.controllers.js";
 import validateAuth from "../middlewares/validateAuth.js";
 import validateSchema from "../middlewares/validateSchema.js";
-import urlSchema from "../schemas/url.schemas.js";
+import urlSchema from "../schemas/urls.schemas.js";
 
 const urlRouter = Router();
 
